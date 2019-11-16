@@ -1,6 +1,7 @@
 import http from 'http';
 import express from 'express';
 import bodyParser from 'body-parser';
+import routes from './routes';
 
 import config from './config';
 
@@ -12,6 +13,9 @@ app.server = http.createServer(app);
 app.use(bodyParser.json({
   limit: config.bodyLimit
 }));
+
+//api routes v1
+app.use('/v1', routes);
 
 // Base URL test endpoint to see if API is running
 app.get('/', (_req, res) => {
