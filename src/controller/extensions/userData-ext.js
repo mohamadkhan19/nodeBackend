@@ -3,6 +3,16 @@ import bcrypt from 'bcryptjs';
 
 class UserDataExt {
 
+  static findUserByID(id, callback) {
+    User.findOne({ '_id': id }, (err, userData) => {
+      if (err) {
+        return callback(err, null);
+      } else{
+        return callback(null, userData);
+      }
+    });
+  }
+
   static findUserByEmail(email, callback) {
     User.findOne({ 'email': email }, (err, userData) => {
       if (err) {
@@ -20,6 +30,15 @@ class UserDataExt {
       email: req.body.email
     });
     user.save((err, result) => {
+        if (err) {
+          return callback(err, null);
+        }
+        return callback(null, result);
+    });
+  }
+
+  static deleteUser(user, callback) {
+    user.remove((err, result) => {
         if (err) {
           return callback(err, null);
         }
