@@ -37,6 +37,17 @@ class UserDataExt {
     });
   }
 
+  static updateUser(req, userData, callback) {
+    userData.name = req.body.name;
+    userData.email = req.body.email;
+    userData.save((err, result) => {
+        if (err) {
+          return callback(err, null);
+        }
+        return callback(null, result);
+    });
+  }
+
   static deleteUser(user, callback) {
     user.remove((err, result) => {
         if (err) {
