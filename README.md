@@ -4,8 +4,7 @@ Getting Started
 npm install
 
 # Start local development:
-PORT=<Port number> npm start
+MONGODB_URI=<mlab url> PORT=<Port number> npm start
 
 # To build ES6 code
 npm run build
-
