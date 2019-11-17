@@ -2,7 +2,6 @@ import http from 'http';
 import express from 'express';
 import bodyParser from 'body-parser';
 import routes from './routes';
-
 import config from './config';
 
 let app = express();
