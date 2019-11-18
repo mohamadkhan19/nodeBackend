@@ -1,7 +1,7 @@
-import User from '../../model/user';
+import User from './../model/user';
 import bcrypt from 'bcryptjs';
 
-class UserDataExt {
+class UserService {
 
   static findUserByID(id, callback) {
     User.findOne({ '_id': id }, (err, userData) => {
@@ -58,4 +58,4 @@ class UserDataExt {
   }
 }
 
-export default UserDataExt;
+export default UserService;

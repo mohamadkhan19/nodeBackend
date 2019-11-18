@@ -1,12 +1,13 @@
 import { Router } from 'express';
-import UserDataExt from './extensions/userData-ext';
+import UserService from './../service/user';
+import ChatService from './../service/chat';
 
 export default () => {
   let api = Router();
 
   // '/v1/user/register'
   api.post('/register', (req, res) => {
-    UserDataExt.findUserByEmail(req.body.email, (err, userData) => {
+    UserService.findUserByEmail(req.body.email, (err, userData) => {
       if (err) {
         res.status(409).json({ 
           message: 'An error occured',
@@ -18,16 +19,34 @@ export default () => {
         });
       }
       else {
-        UserDataExt.createUser(req, (err, result) => {
+        UserService.createUser(req, (err, user) => {
           if(err) {
             res.status(500).json({ 
               error: err.message
             });
           }
           else {
-            res.status(201).json({
-              message: 'User created',
-              obj: result
+            ChatService.createChatUser(user._id, user.name, (err,chatuser) => {
+              if(err) {
+                res.status(500).json({ 
+                  error: err.message
+                });
+              }
+              ChatService.createChatChannel(chatuser._id, (err, chatchannel) => {
+                if(err) {
+                  res.status(500).json({ 
+                    error: err.message
+                  });
+                }
+                res.status(201).json({
+                  message: 'User created',
+                  obj: {
+                    user,
+                    chatuser,
+                    chatchannel
+                  }
+                });
+              });
             });
           }
         })
@@ -36,7 +55,7 @@ export default () => {
   });
 
   api.put('/', (req, res) => {
-    UserDataExt.findUserByID(req.body.id, (err, userData) => {
+    UserService.findUserByID(req.body.id, (err, userData) => {
       if (err) {
         res.status(409).json({ 
           message: 'An error occured',
@@ -48,7 +67,7 @@ export default () => {
         });
       }
       else {
-        UserDataExt.updateUser(req, userData, (err, result) => {
+        UserService.updateUser(req, userData, (err, result) => {
           if(err) {
             res.status(500).json({ 
               error: err
@@ -66,7 +85,7 @@ export default () => {
   });
 
   api.delete('/', (req, res) => {
-    UserDataExt.findUserByID(req.body.id, (err, userData) => {
+    UserService.findUserByID(req.body.id, (err, userData) => {
       if (err) {
         res.status(409).json({ 
           message: 'An error occured',
@@ -78,7 +97,7 @@ export default () => {
         });
       }
       else {
-        UserDataExt.deleteUser(userData, (err, result) => {
+        UserService.deleteUser(userData, (err, result) => {
           if(err) {
             res.status(500).json({ 
               error: err.message
