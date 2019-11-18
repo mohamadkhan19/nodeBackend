@@ -38,7 +38,7 @@ export default () => {
                     error: err.message
                   });
                 }
-                res.status(201).json({
+                res.status(200).json({
                   message: 'User created',
                   obj: {
                     user,
@@ -74,7 +74,7 @@ export default () => {
             });
           }
           else {
-            res.status(201).json({
+            res.status(200).json({
               message: 'User Details Updated',
               obj: result
             });
@@ -104,7 +104,7 @@ export default () => {
             });
           }
           else {
-            res.status(201).json({
+            res.status(200).json({
               message: 'User deleted',
               obj: result
             });
