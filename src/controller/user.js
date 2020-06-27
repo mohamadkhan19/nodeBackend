@@ -26,33 +26,36 @@ export default () => {
             });
           }
           else {
-            ChatService.createChatUser(user._id, user.name, (err,chatuser) => {
-              if(err) {
-                res.status(500).json({ 
-                  error: err.message
-                });
+            res.status(200).json({
+              message: 'User created',
+              obj: {
+                user
               }
-              ChatService.createChatChannel(chatuser._id, (err, chatchannel) => {
-                if(err) {
-                  res.status(500).json({ 
-                    error: err.message
-                  });
-                }
-                res.status(200).json({
-                  message: 'User created',
-                  obj: {
-                    user,
-                    chatuser,
-                    chatchannel
-                  }
-                });
-              });
             });
           }
         })
        }
     });
   });
+
+  api.get('/', (req, res) => {
+    UserService.findAllUsers((err, user) => {
+      if (err) {
+        res.status(409).json({ 
+          message: 'An error occured',
+          error: err
+        });
+      }
+      else {
+        res.status(200).json({
+          message: 'Users fetched',
+          obj: {
+            user
+          }
+        });
+      }
+    })
+});
 
   api.put('/', (req, res) => {
     UserService.findUserByID(req.body.id, (err, userData) => {

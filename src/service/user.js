@@ -13,6 +13,16 @@ class UserService {
     });
   }
 
+  static findAllUsers(callback) {
+    User.find({}, (err, userData) => {
+      if (err) {
+        return callback(err, null);
+      } else{
+        return callback(null, userData);
+      }
+    });
+  }
+
   static findUserByEmail(email, callback) {
     User.findOne({ 'email': email }, (err, userData) => {
       if (err) {
